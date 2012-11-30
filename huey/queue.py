@@ -200,7 +200,7 @@ class CommandSchedule(object):
         return pickle.dumps(messages)
 
     def commands(self):
-        return self._schedule.values()
+        return list(self._schedule.values())
 
     def should_run(self, cmd, dt=None):
         dt = dt or datetime.datetime.now()
@@ -229,7 +229,7 @@ class QueueCommandMetaClass(type):
         registry.register(cls)
 
 
-class QueueCommand(object):
+class QueueCommand(object, metaclass=QueueCommandMetaClass):
     """
     A class that encapsulates the logic necessary to 'do something' given some
     arbitrary data.  When enqueued with the :class:`Invoker`, it will be
@@ -252,8 +252,6 @@ class QueueCommand(object):
         })
     )
     """
-
-    __metaclass__ = QueueCommandMetaClass
 
     def __init__(self, data=None, task_id=None, execute_time=None, retries=0, retry_delay=0):
         """

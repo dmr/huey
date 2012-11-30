@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sys
 
 from django.conf import settings
@@ -82,7 +84,7 @@ ALWAYS_EAGER, default = False
 
 config = getattr(settings, 'HUEY_CONFIG', None)
 if not config or 'QUEUE' not in config:
-    print configuration_message
+    print(configuration_message)
     sys.exit(1)
 
 queue = config['QUEUE']

@@ -2,10 +2,10 @@
 import sys
 import unittest
 
-from huey import tests
+import huey.tests
 
 def runtests(*test_args):
-    suite = unittest.TestLoader().loadTestsFromModule(tests)
+    suite = unittest.TestLoader().loadTestsFromModule(huey.tests)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     if result.failures:
         sys.exit(1)

@@ -1,8 +1,13 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import datetime
 import logging
-import os
-import Queue
+
+try:
+    import Queue
+except ImportError: # py3
+    import queue as Queue
+
 import signal
 import sys
 import time
@@ -12,19 +17,18 @@ from logging.handlers import RotatingFileHandler
 from huey.exceptions import QueueException, QueueReadException, DataStorePutException, QueueWriteException
 from huey.queue import Invoker, CommandSchedule
 from huey.registry import registry
-from huey.utils import load_class
 
 
 class IterableQueue(Queue.Queue):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         result = self.get()
         if result is StopIteration:
             raise result
         return result
-
+    next = __next__
 
 class Consumer(object):
     def __init__(self, invoker, config):
@@ -265,7 +269,7 @@ class Consumer(object):
         self.logger.info('shutdown...')
 
 def err(s):
-    print '\033[91m%s\033[0m' % s
+    print('\033[91m%s\033[0m' % s)
     sys.exit(1)
 
 def load_config(config):

@@ -116,11 +116,11 @@ def crontab(month='*', day='*', day_of_week='*', hour='*', minute='*'):
     m,n = run on m and n
     """
     validation = (
-        ('m', month, range(1, 13)),
-        ('d', day, range(1, 32)),
-        ('w', day_of_week, range(7)),
-        ('H', hour, range(24)),
-        ('M', minute, range(60))
+        ('m', month, list(range(1, 13))),
+        ('d', day, list(range(1, 32))),
+        ('w', day_of_week, list(range(7))),
+        ('H', hour, list(range(24))),
+        ('M', minute, list(range(60)))
     )
     cron_settings = []
     min_interval = None
@@ -145,10 +145,10 @@ def crontab(month='*', day='*', day_of_week='*', hour='*', minute='*'):
             else:
                 dash_match = dash_re.match(piece)
                 if dash_match:
-                    lhs, rhs = map(int, dash_match.groups())
+                    lhs, rhs = list(map(int, dash_match.groups()))
                     if lhs not in acceptable or rhs not in acceptable:
                         raise ValueError('%s is not a valid input' % piece)
-                    settings.update(range(lhs, rhs+1))
+                    settings.update(list(range(lhs, rhs+1)))
                     continue
 
                 every_match = every_re.match(piece)

@@ -56,7 +56,7 @@ class CommandRegistry(object):
         klass = self._registry.get(klass_str)
 
         if not klass:
-            raise QueueException, '%s not found in CommandRegistry' % klass_str
+            raise QueueException('%s not found in CommandRegistry' % klass_str)
 
         return klass
 
@@ -67,6 +67,8 @@ class CommandRegistry(object):
 
         klass = self.get_command_class(klass_str)
 
+        data = eval(data)
+        execute_time = eval(execute_time)
         command_data = pickle.loads(data)
         ex_time = pickle.loads(execute_time)
         retries = int(retries)
